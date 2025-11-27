@@ -53,6 +53,12 @@ int ParseConfigureFile(const string filename, Renderer &r)
         cout << "Failed to read the file : " << filename << endl;
         return -1;
     }
+    string line;
+    getline()
+    while (getline(fin, line))
+    {
+
+    }
     return 0;
 }
 
