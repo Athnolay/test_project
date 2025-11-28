@@ -1,0 +1,5 @@
+w,h
+30,30
+circle 8 8 12
+node 8 1
+node 8 15
