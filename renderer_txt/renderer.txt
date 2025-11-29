@@ -1,0 +1,8 @@
+w,h
+30,30
+circle 8 8 13 2
+node 8 1
+node 8 15
+line 0 10 28 1 2
+triangle 6 24 23 5 28 17 3
+ftriangle 5 13 10 3 23 25

@@ -5,3 +5,6 @@ leak.log
 nohup.out
 mk
 test
+temp
+temp.txt
+.temp
