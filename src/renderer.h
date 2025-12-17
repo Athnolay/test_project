@@ -72,7 +72,31 @@ typedef struct Renderer
     }
 } Renderer;
 
+typedef struct Vec
+{
+    int x, y, z;
+
+    Vec()
+    {
+        x = 0;
+        y = 0;
+        z = 0;
+    }
+
+    Vec(int x_, int y_, int z_)
+        : x(x_), y(y_), z(z_) {};
+    
+    void operator=(const Vec &vin)
+    {
+        x = vin.x;
+        y = vin.y;
+        z = vin.z;
+    }
+} Vec;
+
 void RendererLine(Renderer &r, int x1, int y1, int x2, int y2, int depth, char c = '*');
+
+void RendererLine3(Renderer &r, Vec &vec1, Vec &vec2, char c = '*');
 
 void RendererTriangle(Renderer &r, vector<pair<int, int>> &v, int depth = 1, bool fill = false, char c = '*');
 
