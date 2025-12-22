@@ -8,7 +8,6 @@
 #include "renderer.h"
 using namespace std;
 
-
 void AnalyseLine(Renderer &r, const string &line)
 {
     if (line.empty())
@@ -76,6 +75,33 @@ void AnalyseLine(Renderer &r, const string &line)
         }
         bool fill = (v_str.at(0) == "ftriangle") ? true : false;
         RendererTriangle(r, vetrex, depth, fill, '#');
+    }
+    else if (v_str.at(0) == "line3")
+    {
+        if (v_str.size() < 7)
+        {
+            cout << "The line has incorrect format : " << line << endl;
+            return;
+        }
+
+        RendererLine3(r, Vec(stoi(v_str[1]), stoi(v_str[2]), stoi(v_str[3])),
+                      Vec(stoi(v_str[4]), stoi(v_str[5]), stoi(v_str[6])));
+    }
+    else if (v_str.at(0) == "triangle3" || v_str.at(0) == "ftriangle3")
+    {
+        if (v_str.size() < 10)
+        {
+            cout << "The line has incorrect format : " << line << endl;
+            return;
+        }
+
+        vector<Vec> vetrex;
+        for (int i = 0; i < 3; i++)
+        {
+            vetrex.push_back(Vec(stoi(v_str[3 * i + 1]), stoi(v_str[3 * i + 2]), stoi(v_str[3 * i + 3])));
+        }
+        bool fill = (v_str.at(0) == "ftriangle3") ? true : false;
+        RendererTriangle3(r, vetrex, fill, '#');
     }
 }
 

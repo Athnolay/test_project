@@ -63,7 +63,7 @@ void RendererLine(Renderer &r, int x1, int y1, int x2, int y2, int depth, char c
     }
 }
 
-void RendererTriangle(Renderer &r, vector<pair<int, int>> &v, int depth, bool fill, char c)
+void RendererTriangle(Renderer &r, vector<pair<int, int>> v, int depth, bool fill, char c)
 {
     if (v.size() != 3)
         return;
@@ -161,6 +161,124 @@ void RendererCircle(Renderer &r, int x, int y, int rr, int depth, char c)
         if (pi >= 0)
         {
             dyi = dyi - 1;
+        }
+    }
+}
+
+void RendererLine3(Renderer &r, Vec vec1, Vec vec2, char c)
+{
+    int dx = vec2.x - vec1.x;
+    int dy = vec2.y - vec1.y;
+    int dz = vec2.z - vec1.z;
+
+    int delta_x = abs(dx);
+    int delta_y = abs(dy);
+
+    int inc_x = (dx >= 0) ? 1 : -1;
+    int inc_y = (dy >= 0) ? 1 : -1;
+
+    int pi = 0;
+    int xi = vec1.x;
+    int yi = vec1.y;
+    int zi;
+
+    if (delta_x >= delta_y)
+    {
+        int delta_dec = 2 * (delta_x - delta_y);
+        int delta_min = 2 * delta_y;
+        pi = 2 * delta_y - delta_x;
+        while (true)
+        {
+            zi = (delta_x == 0) ? (max(vec1.z, vec2.z)) : vec1.z + (xi - vec1.x) / dx * dz;
+            r.DrawPixel(xi, yi, zi, c);
+            if (xi == vec2.x && yi == vec2.y)
+                break;
+            if (pi >= 0)
+            {
+                pi = pi - delta_dec;
+                yi = yi + inc_y;
+            }
+            else
+            {
+                // yi = yi
+                pi = pi + delta_min;
+            }
+            xi = xi + inc_x;
+        }
+    }
+    else
+    {
+        int delta_dec = 2 * (delta_y - delta_x);
+        int delta_min = 2 * delta_x;
+        pi = 2 * delta_x - delta_y;
+        while (true)
+        {
+            zi = (delta_y == 0) ? (max(vec1.z, vec2.z)) : vec1.z + (yi - vec1.y) / dy * dz;
+            r.DrawPixel(xi, yi, zi, c);
+            if (xi == vec2.x && yi == vec2.y)
+                break;
+            if (pi >= 0)
+            {
+                pi = pi - delta_dec;
+                xi = xi + inc_x;
+            }
+            else
+            {
+                // xi = xi
+                pi = pi + delta_min;
+            }
+            yi = yi + inc_y;
+        }
+    }
+}
+
+void RendererTriangle3(Renderer &r, vector<Vec> v, bool fill, char c)
+{
+    if (v.size() != 3)
+        return;
+    if (!fill)
+    {
+        RendererLine3(r, v[0], v[1], c);
+        RendererLine3(r, v[0], v[2], c);
+        RendererLine3(r, v[1], v[2], c);
+    }
+    else
+    {
+        if (v[0].y > v[1].y)
+            swap(v[0], v[1]);
+        if (v[0].y > v[2].y)
+            swap(v[0], v[2]);
+        if (v[1].y > v[2].y)
+            swap(v[1], v[2]);
+
+        int total_height = v[2].y - v[0].y;
+        if (total_height == 0)
+        {
+            RendererLine3(r, v[0], v[1], c);
+            RendererLine3(r, v[0], v[2], c);
+            RendererLine3(r, v[1], v[2], c);
+        }
+        int segment_height = v[1].y - v[0].y;
+        for (int yi = v[0].y; yi <= v[1].y; yi++)
+        {
+            int xl = (segment_height == 0) ? v[1].x : v[0].x + (v[1].x - v[0].x) * (yi - v[0].y) / segment_height;
+            int zl = (segment_height == 0) ? v[1].z : v[0].z + (v[1].z - v[0].z) * (yi - v[0].y) / segment_height;
+
+            int xr = v[0].x + (v[2].x - v[0].x) * (yi - v[0].y) / total_height;
+            int zr = v[0].z + (v[2].z - v[0].z) * (yi - v[0].y) / total_height;
+
+            RendererLine3(r, Vec(xl, yi, zl), Vec(xr, yi, zr), c);
+        }
+        segment_height = v[2].y - v[1].y;
+        for (int yi = v[1].y; yi <= v[2].y; yi++)
+        {
+            int xl = (segment_height == 0) ? v[1].x : v[1].x + (v[2].x - v[1].x) * (yi - v[1].y) / segment_height;
+            int zl = (segment_height == 0) ? v[1].z : v[1].z + (v[2].z - v[1].z) * (yi - v[1].y) / segment_height;
+
+            int xr = v[0].x + (v[2].x - v[0].x) * (yi - v[0].y) / total_height;
+            int zr = v[0].z + (v[2].z - v[0].z) * (yi - v[0].y) / total_height;
+
+            RendererLine3(r, Vec(xl, yi, zl), Vec(xr, yi, zr), c);
         }
     }
 }

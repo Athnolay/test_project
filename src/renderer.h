@@ -96,10 +96,12 @@ typedef struct Vec
 
 void RendererLine(Renderer &r, int x1, int y1, int x2, int y2, int depth, char c = '*');
 
-void RendererLine3(Renderer &r, Vec &vec1, Vec &vec2, char c = '*');
-
-void RendererTriangle(Renderer &r, vector<pair<int, int>> &v, int depth = 1, bool fill = false, char c = '*');
+void RendererTriangle(Renderer &r, vector<pair<int, int>> v, int depth = 1, bool fill = false, char c = '*');
 
 void RendererCircle(Renderer &r, int x, int y, int rr, int depth, char c = '*');
+
+void RendererLine3(Renderer &r, Vec vec1, Vec vec2, char c = '*');
+
+void RendererTriangle3(Renderer &r, vector<Vec> v, bool fill = false, char c = '#');
 
 #endif
