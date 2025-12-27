@@ -189,7 +189,7 @@ void RendererLine3(Renderer &r, Vec vec1, Vec vec2, char c)
         pi = 2 * delta_y - delta_x;
         while (true)
         {
-            zi = (delta_x == 0) ? (max(vec1.z, vec2.z)) : vec1.z + (xi - vec1.x) / dx * dz;
+            zi = (delta_x == 0) ? (max(vec1.z, vec2.z)) : vec1.z + 1.0 * (xi - vec1.x) / dx * dz;
             r.DrawPixel(xi, yi, zi, c);
             if (xi == vec2.x && yi == vec2.y)
                 break;
@@ -213,7 +213,7 @@ void RendererLine3(Renderer &r, Vec vec1, Vec vec2, char c)
         pi = 2 * delta_x - delta_y;
         while (true)
         {
-            zi = (delta_y == 0) ? (max(vec1.z, vec2.z)) : vec1.z + (yi - vec1.y) / dy * dz;
+            zi = (delta_y == 0) ? (max(vec1.z, vec2.z)) : vec1.z + 1.0 * (yi - vec1.y) / dy * dz;
             r.DrawPixel(xi, yi, zi, c);
             if (xi == vec2.x && yi == vec2.y)
                 break;
